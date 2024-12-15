@@ -126,7 +126,10 @@ namespace ClipsFormsExample
         {
             foreach (var line in outputBox.Lines)
             {
-                clips.Eval($"(assert (input-question (name \"{line}\")))");
+                var name = line.Split().First();
+                var coef = line.Split().Last();
+                var str = $"(assert (input-question (name \"{name}\") (certainty {coef})))";
+                clips.Eval(str);
             }
             clips.Run();
             HandleResponse();
@@ -152,7 +155,7 @@ namespace ClipsFormsExample
         {
             if (clipsOpenFileDialog.ShowDialog() == DialogResult.OK)
             {
-                codeBox.Text = System.IO.File.ReadAllText(clipsOpenFileDialog.FileName);
+                codeBox.Text += System.IO.File.ReadAllText(clipsOpenFileDialog.FileName);
                 Text = "Экспертная система \"Тиндер\" – " + clipsOpenFileDialog.FileName;
             }
         }
